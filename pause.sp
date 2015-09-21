@@ -31,7 +31,7 @@ public Plugin:myinfo =
 	name = "Pause plugin",
 	author = "CanadaRox",
 	description = "Adds pause functionality without breaking pauses",
-	version = "9",
+	version = "9.1",
 	url = ""
 };
 
@@ -142,6 +142,7 @@ public OnClientPutInServer(client)
 public OnMapStart()
 {
 	PrecacheSound("buttons/blip2.wav");
+	PrecacheSound("buttons/blip1.wav");
 }
 
 public RoundEnd_Event(Handle:event, const String:name[], bool:dontBroadcast)
@@ -419,6 +420,16 @@ public Action:ReadyCountdownDelay_Timer(Handle:timer)
 	else
 	{
 		PrintToChatAll("Live in: %d", readyDelay);
+		if (GetConVarBool(l4d_ready_blips))
+		{
+			for (new client = 1; client <= MaxClients; client++)
+			{
+				if (IsClientInGame(client))
+				{
+					ClientCommand(client, "play buttons/blip1.wav");
+				}
+			}
+		}
 		readyDelay--;
 	}
 	return Plugin_Continue;
